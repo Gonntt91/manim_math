@@ -36,20 +36,37 @@ class OctagonAndTriangles(Scene):
         vertex_1 = vertices[0]
         vertex_2 = vertices[1]
 
+
+
         # Step 5: Calculate and draw the height of the triangle (from the center to the edge)
         edge_midpoint = (vertex_1 + vertex_2) / 2  # Midpoint of the edge
         height = Line(ORIGIN, edge_midpoint, color=RED)  # Height from center to midpoint
+
+        edge_1 = Line(edge_midpoint, vertex_2)
+        height_1 = Line(edge_midpoint, ORIGIN)
+
         self.play(Create(height))
 
         # Label the height and the edge
-        height_label = MathTex("h").next_to(height, UP)
+        height_label = MathTex("h").next_to(height, UP).shift(DOWN * 0.5)
+        height_label.scale(0.8).set_color(BLUE)
         edge_label = MathTex("n").next_to((vertex_1 + vertex_2) / 2, RIGHT)
+        edge_label.scale(0.8).set_color(BLUE)
         self.play(Write(height_label), Write(edge_label))
 
-        # Step 6: Display the area formula using height and edge length
-        area_formula = MathTex(r"A = \frac{1}{2} \times h \times e").to_edge(DOWN)
+        # Step 6: Add a perpendicular mark at the intersection of the height and the edge
+        # Create a small right-angle mark at the intersection
+        perpendicular_marker = Angle(height_1, edge_1, radius=0.2, quadrant=(1, -1), elbow=True, color=RED )
+
+        self.play(Create(perpendicular_marker))
+
+        # Step 7: Display the area formula using height and edge length
+        area_formula = MathTex(r"S = \frac{1}{2} \times h \times e").to_edge(DOWN)
         self.play(Write(area_formula))
 
         self.wait(2)
+
+
+
 
 # manim -pql CircleArea.py OctagonAndTriangles
