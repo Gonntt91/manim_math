@@ -50,7 +50,7 @@ class OctagonAndTriangles(Scene):
         # Label the height and the edge
         height_label = MathTex("h").next_to(height, UP).shift(DOWN * 0.5)
         height_label.scale(0.8).set_color(BLUE)
-        edge_label = MathTex("n").next_to((vertex_1 + vertex_2) / 2, RIGHT)
+        edge_label = MathTex("e").next_to((vertex_1 + vertex_2) / 2, RIGHT)
         edge_label.scale(0.8).set_color(BLUE)
         self.play(Write(height_label), Write(edge_label))
 
@@ -58,10 +58,14 @@ class OctagonAndTriangles(Scene):
         # Create a small right-angle mark at the intersection
         perpendicular_marker = Angle(height_1, edge_1, radius=0.2, quadrant=(1, -1), elbow=True, color=RED )
 
+        triangles[0].set_color(GREEN)
+
         self.play(Create(perpendicular_marker))
 
         # Step 7: Display the area formula using height and edge length
-        area_formula = MathTex(r"S = \frac{1}{2} \times h \times e").to_edge(DOWN)
+        vietnamese_text = Text("Diện tích tam giác =")
+        math_expression = MathTex(r"\frac{1}{2} \times h \times e")
+        area_formula = VGroup(vietnamese_text, math_expression).arrange(RIGHT).to_edge(DOWN)
         self.play(Write(area_formula))
 
         self.wait(2)
