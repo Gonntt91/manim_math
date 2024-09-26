@@ -1,8 +1,45 @@
 from manim import *
 
 
-class PolygonAndTriangles(Scene):
+config.frame_width = 9  # Corresponds to the width of the screen
+config.frame_height = 16  # Corresponds to the height of the screen
+config.pixel_height = 1920  # Height in pixels (full HD)
+config.pixel_width = 1080   # Width in pixels (full HD)
+
+
+class Equation(Scene):
+    def explain_pi(self):
+        perimeter = Text(u"Chu Vi  đường tròn  = ", font_size=24)
+        right_side = Text(u"đường kính x Hằng số", font_size=24)
+        perimeter_formulus = VGroup(perimeter, right_side).arrange(RIGHT).to_edge(UP)  # Position it at the top of the screen
+        perimeter_formulus.shift(DOWN * 1)
+
+        text2 = Text(u"Hằng số này bằng 3.1416", font_size=24).next_to(perimeter_formulus, DOWN)
+        text3 = Text(u"Đây chính là số Pi", font_size=24).next_to(text2, DOWN)
+        text4 = Text(u"Chu Vi  = đường kính x Pi", font_size=30, color=RED).move_to(ORIGIN)
+
+        self.play(Write(perimeter_formulus))
+        self.play(Write(text2))
+        self.play(Write(text3))
+        self.play(Write(text4))
+
+        self.play(FadeOut(perimeter_formulus))
+        self.play(FadeOut(text2))
+        self.play(FadeOut(text3))
+
+        area_formula = MathTex(r"S = \pi r^2", font_size=40, color=YELLOW).move_to(ORIGIN)
+        self.play(Transform(text4, area_formula))
+
+        why = Text("But Why?").next_to(area_formula, DOWN)
+        self.play(FadeIn(why))
+
+    def construct(self):
+        self.explain_pi()
+
+
+class PolygonAndTriangles(Equation):
     edge_number = 8
+
 
     def area_1_polygon(self):
         # Step 1: Draw a regular octagon with 8 edges
@@ -97,6 +134,10 @@ class PolygonAndTriangles(Scene):
         self.clear()
 
     def construct(self):
+        self.explain_pi()
+        self.wait(1)
+        self.clear()
+
         self.edge_number = 4
         self.area_1_polygon()
 
@@ -113,3 +154,6 @@ class PolygonAndTriangles(Scene):
 
 
 # manim -pql CircleArea.py PolygonAndTriangles
+
+
+# manim -pql CircleArea.py Equation

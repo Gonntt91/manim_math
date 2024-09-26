@@ -2,8 +2,8 @@ from manim import *
 
 class EquationTransformation(Scene):
     def construct(self):
-        # Initial equation: 2x + 3 = 7
-        initial_eq = MathTex("2x + 3 = 7")
+
+        initial_eq = MathTex(r"\frac{1}{2} \times h \times Chu Vi")
         initial_eq.to_edge(UP)  # Position it at the top of the screen
 
         # Simplified equation: 2x = 7 - 3
