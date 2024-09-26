@@ -42,6 +42,11 @@ class PolygonAndTriangles(Equation):
 
 
     def area_1_polygon(self):
+
+        n_edge_text = MathTex(f"N = {self.edge_number}").to_edge(UP)
+        n_edge_text.shift(DOWN * 1)
+        self.play(Write(n_edge_text))
+
         # Step 1: Draw a regular octagon with 8 edges
         octagon = RegularPolygon(n=self.edge_number, radius=2, color=BLUE)  # n=8 for octagon
         self.play(Create(octagon))
@@ -100,20 +105,22 @@ class PolygonAndTriangles(Equation):
         self.play(Create(perpendicular_marker))
 
         # Step 7: Display the area formula using height and edge length
-        vietnamese_text = Text("Diện tích tam giác =")
+        vietnamese_text = VGroup(Text("S"), Text("( tam giác )", font_size=20), Text(" =")).arrange(RIGHT)
         math_expression = MathTex(r"\frac{1}{2} \times h \times e")
         area_formula = VGroup(vietnamese_text, math_expression).arrange(RIGHT).to_edge(DOWN).to_edge(LEFT)
+        area_formula.shift(UP * 2)
         self.play(Write(area_formula))
         self.wait(1)
 
         self.play(FadeOut(area_formula))
 
-        area_polygon_text = Text(f"Diện tích đa giác = ")
+        area_polygon_text = VGroup(Text("S"), Text("( đa giác )", font_size=20), Text(" =")).arrange(RIGHT)
         math_expression = MathTex(r"\frac{1}{2} \times h \times e \times " + str(self.edge_number))
 
         # area_formula = VGroup(vietnamese_text, math_expression).arrange(RIGHT).to_edge(DOWN)
         # self.play(Write(area_formula))
         area_polygon_text.to_edge(DOWN).to_edge(LEFT)
+        area_polygon_text.shift(UP * 2)
         math_expression.next_to(area_polygon_text, RIGHT)
         self.play(Write(area_polygon_text))
         self.play(Write(math_expression))
@@ -128,8 +135,6 @@ class PolygonAndTriangles(Equation):
         math_expression = MathTex(r"\frac{1}{2} \times h \times " + "Chu Vi")
         math_expression.next_to(area_polygon_text, RIGHT)
         self.play(Write(math_expression))
-
-
 
         self.clear()
 

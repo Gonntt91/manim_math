@@ -1,30 +1,15 @@
 from manim import *
 
+config.frame_width = 9  # Corresponds to the width of the screen
+config.frame_height = 16  # Corresponds to the height of the screen
+config.pixel_height = 1920  # Height in pixels (full HD)
+config.pixel_width = 1080   # Width in pixels (full HD)
+
 class EquationTransformation(Scene):
+    edge_number = 8
     def construct(self):
-
-        initial_eq = MathTex(r"\frac{1}{2} \times h \times Chu Vi")
-        initial_eq.to_edge(UP)  # Position it at the top of the screen
-
-        # Simplified equation: 2x = 7 - 3
-        simplified_eq = MathTex("2x = 7 - 3")
-        simplified_eq.next_to(initial_eq, DOWN, buff=1)
-
-        # Final equation: x = 2
-        final_eq = MathTex("x = 2")
-        final_eq.next_to(simplified_eq, DOWN, buff=1)
-
-        # Step 1: Display the initial equation
-        self.play(Write(initial_eq))
-        self.wait(1)
-
-        # Step 2: Transform the initial equation to the simplified equation
-        self.play(Transform(initial_eq, simplified_eq))
-        self.wait(1)
-
-        # Step 3: Transform the simplified equation to the final equation
-        self.play(Transform(initial_eq, final_eq))
-        self.wait(2)
-
+        n_edge_text = MathTex(f"N = {self.edge_number}").to_edge(UP)
+        n_edge_text.shift(DOWN * 1)
+        self.play(Write(n_edge_text))
 
 # manim -pql formulus.py EquationTransformation
