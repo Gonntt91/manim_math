@@ -1,10 +1,12 @@
 from manim import *
 
 
-class OctagonAndTriangles(Scene):
-    def construct(self):
+class PolygonAndTriangles(Scene):
+    edge_number = 8
+
+    def area_1_polygon(self):
         # Step 1: Draw a regular octagon with 8 edges
-        octagon = RegularPolygon(n=8, radius=2, color=BLUE)  # n=8 for octagon
+        octagon = RegularPolygon(n=self.edge_number, radius=2, color=BLUE)  # n=8 for octagon
         self.play(Create(octagon))
 
         # Step 2: Draw the center point of the octagon
@@ -36,8 +38,6 @@ class OctagonAndTriangles(Scene):
         vertex_1 = vertices[0]
         vertex_2 = vertices[1]
 
-
-
         # Step 5: Calculate and draw the height of the triangle (from the center to the edge)
         edge_midpoint = (vertex_1 + vertex_2) / 2  # Midpoint of the edge
         height = Line(ORIGIN, edge_midpoint, color=RED)  # Height from center to midpoint
@@ -65,12 +65,51 @@ class OctagonAndTriangles(Scene):
         # Step 7: Display the area formula using height and edge length
         vietnamese_text = Text("Diện tích tam giác =")
         math_expression = MathTex(r"\frac{1}{2} \times h \times e")
-        area_formula = VGroup(vietnamese_text, math_expression).arrange(RIGHT).to_edge(DOWN)
+        area_formula = VGroup(vietnamese_text, math_expression).arrange(RIGHT).to_edge(DOWN).to_edge(LEFT)
         self.play(Write(area_formula))
+        self.wait(1)
 
-        self.wait(2)
+        self.play(FadeOut(area_formula))
+
+        area_polygon_text = Text(f"Diện tích đa giác = ")
+        math_expression = MathTex(r"\frac{1}{2} \times h \times e \times " + str(self.edge_number))
+
+        # area_formula = VGroup(vietnamese_text, math_expression).arrange(RIGHT).to_edge(DOWN)
+        # self.play(Write(area_formula))
+        area_polygon_text.to_edge(DOWN).to_edge(LEFT)
+        math_expression.next_to(area_polygon_text, RIGHT)
+        self.play(Write(area_polygon_text))
+        self.play(Write(math_expression))
+
+        self.play(FadeOut(math_expression))
+
+        math_expression = MathTex(r"\frac{1}{2} \times h \times (e \times " + str(self.edge_number) + ")")
+        math_expression.next_to(area_polygon_text, RIGHT)
+        self.play(Write(math_expression))
+        self.play(FadeOut(math_expression))
+
+        math_expression = MathTex(r"\frac{1}{2} \times h \times " + "Chu Vi")
+        math_expression.next_to(area_polygon_text, RIGHT)
+        self.play(Write(math_expression))
 
 
 
+        self.clear()
 
-# manim -pql CircleArea.py OctagonAndTriangles
+    def construct(self):
+        self.edge_number = 4
+        self.area_1_polygon()
+
+        self.edge_number = 8
+        self.area_1_polygon()
+
+        self.wait(1)
+
+        self.edge_number = 12
+        self.area_1_polygon()
+
+        self.edge_number = 18
+        self.area_1_polygon()
+
+
+# manim -pql CircleArea.py PolygonAndTriangles
