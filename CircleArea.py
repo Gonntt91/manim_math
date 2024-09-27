@@ -7,7 +7,68 @@ config.pixel_height = 1920  # Height in pixels (full HD)
 config.pixel_width = 1080   # Width in pixels (full HD)
 
 
+class CircleAnimation(Scene):
+    def introduction_pi(self):
+        where_pi_from1 = Text("Số Pi đến từ đâu?", font_size=36).move_to(ORIGIN).shift(UP)
+        where_pi_from2 = Text("Tại sao lại có số Pi ?", font_size=36).next_to(where_pi_from1, DOWN)
+        self.play(Write(where_pi_from1))
+        self.play(Write(where_pi_from2))
+        self.wait(1)
+        self.play(FadeOut(where_pi_from1, where_pi_from2))
+
+    def draw_3_circle(self):
+        self.introduction_pi()
+
+        # Step 1: Create the first circle with a diameter
+        small_circle = Circle(radius=1, color=BLUE)  # Small circle
+        small_diameter = Line(small_circle.get_left(), small_circle.get_right(),
+                              color=YELLOW)  # Diameter of the small circle
+
+        # Position the circle in the center
+        small_circle_group = VGroup(small_circle, small_diameter)
+
+        # Step 2: Create the bigger circle with a diameter (but don't show it yet)
+        big_circle = Circle(radius=2, color=GREEN)  # Bigger circle
+        big_diameter = Line(big_circle.get_left(), big_circle.get_right(), color=YELLOW)  # Diameter of the big circle
+
+        # Step 3: Position the larger circle group (off-screen initially)
+        big_circle_group = VGroup(big_circle, big_diameter)
+        big_circle_group.shift(DOWN)  # Start it on the below side (out of view)
+
+        # Step 2: Create the bigger circle with a diameter (but don't show it yet)
+        biggest_circle = Circle(radius=3, color=GREEN)  # Bigger circle
+        biggest_diameter = Line(biggest_circle.get_left(), biggest_circle.get_right(),
+                                color=YELLOW)  # Diameter of the big circle
+
+        # Step 3: Position the larger circle group (off-screen initially)
+        biggest_circle_group = VGroup(biggest_circle, biggest_diameter)
+
+        # Step 4: Animate showing the small circle first
+        self.play(Create(small_circle))
+        self.play(Create(small_diameter))
+
+        self.wait(1)
+
+        # Step 5: Animate the small circle moving left and simultaneously show the larger circle
+        self.play(
+            small_circle_group.animate.shift(UP * 3),  # Move the small circle to the left
+        )
+        self.play(Create(big_circle))
+        self.play(Create(big_diameter))
+
+        # Keep the scene on screen for 2 seconds
+        self.wait(2)
+        self.play(small_circle_group.animate.shift(UP * 3), big_circle_group.animate.shift(UP*3))
+
+        biggest_circle_group.next_to(big_circle_group, DOWN, buff= 1)
+        self.play(Create(biggest_circle_group))
+
+    def construct(self):
+        self.draw_3_circle()
+
 class Equation(Scene):
+
+
     def explain_pi(self):
         perimeter = Text(u"Chu Vi  đường tròn  = ", font_size=24)
         right_side = Text(u"đường kính x Hằng số", font_size=24)
@@ -33,13 +94,42 @@ class Equation(Scene):
         why = Text("But Why?").next_to(area_formula, DOWN)
         self.play(FadeIn(why))
 
+    def explain_area(self):
+        left_side = Text(u"S  = ", font_size=40)
+        right_side = MathTex(r"\frac{1}{2} \times h \times P", font_size=35)
+        area_formulus = VGroup(left_side, right_side).arrange(RIGHT).to_edge(UP)  # Position it at the top of the screen
+        area_formulus.shift(DOWN * 1)
+
+        text2 = (Text(u"Khi đa giác đều có càng lớn, nó càng trở nên càng tròn", font_size=24)
+                 .next_to(area_formulus, DOWN))
+        text3 = (Text(u"lúc đó diện tích đa giác càng gần đúng với diện tích hình tròn", font_size=24)
+                 .next_to(text2, DOWN))
+        text4 = (Text(u"và đoạn h dần trở thành bán kính", font_size=30, color=RED)
+                 .next_to(text3, DOWN))
+
+        text5 = (MathTex(r"S = \frac{1}{2} \times r \times P", font_size=50, color=YELLOW)
+                 .next_to(text4, DOWN))
+        text6 = (MathTex(r"S = \frac{1}{2} \times r \times 2 \times r \times \pi", font_size=50, color=YELLOW)
+                 .next_to(text5, DOWN))
+        area_formula = MathTex(r"S = \pi r^2", font_size=50, color=YELLOW).move_to(ORIGIN)
+
+        self.play(Write(area_formulus))
+        self.play(Write(text2))
+        self.play(Write(text3))
+        self.play(Write(text4))
+
+        self.play(Write(text5))
+        self.play(Write(text6))
+
+        self.play(FadeIn(area_formula))
+
     def construct(self):
-        self.explain_pi()
+        # self.explain_pi()
+        self.explain_area()
 
 
-class PolygonAndTriangles(Equation):
+class PolygonAndTriangles(CircleAnimation, Equation):
     edge_number = 8
-
 
     def area_1_polygon(self):
 
@@ -136,9 +226,16 @@ class PolygonAndTriangles(Equation):
         math_expression.next_to(area_polygon_text, RIGHT)
         self.play(Write(math_expression))
 
+        self.wait(1)
         self.clear()
 
+
     def construct(self):
+        # draw circle
+        self.draw_3_circle()
+        self.wait(1)
+        self.clear()
+
         self.explain_pi()
         self.wait(1)
         self.clear()
@@ -157,8 +254,12 @@ class PolygonAndTriangles(Equation):
         self.edge_number = 18
         self.area_1_polygon()
 
+        self.explain_area()
+
 
 # manim -pql CircleArea.py PolygonAndTriangles
 
 
 # manim -pql CircleArea.py Equation
+
+# manim -pql CircleArea.py CircleAnimation
