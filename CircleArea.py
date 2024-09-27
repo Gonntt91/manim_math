@@ -21,8 +21,7 @@ class CircleAnimation(Scene):
 
         # Step 1: Create the first circle with a diameter
         small_circle = Circle(radius=1, color=BLUE)  # Small circle
-        small_diameter = Line(small_circle.get_left(), small_circle.get_right(),
-                              color=YELLOW)  # Diameter of the small circle
+        small_diameter = Line(small_circle.get_left(), small_circle.get_right(), color=YELLOW)  # Diameter of the small circle
 
         # Position the circle in the center
         small_circle_group = VGroup(small_circle, small_diameter)
@@ -70,28 +69,37 @@ class Equation(Scene):
 
 
     def explain_pi(self):
-        perimeter = Text(u"Chu Vi  đường tròn  = ", font_size=24)
-        right_side = Text(u"đường kính x Hằng số", font_size=24)
-        perimeter_formulus = VGroup(perimeter, right_side).arrange(RIGHT).to_edge(UP)  # Position it at the top of the screen
-        perimeter_formulus.shift(DOWN * 1)
 
-        text2 = Text(u"Hằng số này bằng 3.1416", font_size=24).next_to(perimeter_formulus, DOWN)
-        text3 = Text(u"Đây chính là số Pi", font_size=24).next_to(text2, DOWN)
+        fontSize = 30
+
+        text1 = VGroup(
+            Text(u"Người xưa đã nhận thấy rằng ", font_size=fontSize),
+            Text(u"khi đường kính càng lớn thì ", font_size=fontSize),
+            Text("chu vi hình tròn càng lớn lên bấy nhiêu lần", font_size=fontSize),
+            Text("thì chu vi hình tròn càng lớn lên bấy nhiêu lần", font_size=fontSize)
+        ).arrange(DOWN).to_edge(UP)
+
+        text1.shift(DOWN)
+
+        text2 = Text(u"Tỷ lệ này luôn xấp xỉ 3.1416", font_size=fontSize).next_to(text1, DOWN)
+        text3 = Text(u"Đây chính là số Pi", font_size=fontSize).next_to(text2, DOWN)
         text4 = Text(u"Chu Vi  = đường kính x Pi", font_size=30, color=RED).move_to(ORIGIN)
 
-        self.play(Write(perimeter_formulus))
+        self.play(Write(text1))
         self.play(Write(text2))
         self.play(Write(text3))
         self.play(Write(text4))
 
-        self.play(FadeOut(perimeter_formulus))
+        self.play(FadeOut(text1))
         self.play(FadeOut(text2))
         self.play(FadeOut(text3))
 
-        area_formula = MathTex(r"S = \pi r^2", font_size=40, color=YELLOW).move_to(ORIGIN)
+        self.wait(0.5)
+        area_formula = MathTex(r"S = \pi r^2", font_size=50, color=YELLOW).move_to(ORIGIN)
         self.play(Transform(text4, area_formula))
 
-        why = Text("But Why?").next_to(area_formula, DOWN)
+        self.wait(0.5)
+        why = Text("But Why?").next_to(area_formula, DOWN, buff=2)
         self.play(FadeIn(why))
 
     def explain_area(self):
@@ -124,8 +132,8 @@ class Equation(Scene):
         self.play(FadeIn(area_formula))
 
     def construct(self):
-        # self.explain_pi()
-        self.explain_area()
+        self.explain_pi()
+        # self.explain_area()
 
 
 class PolygonAndTriangles(CircleAnimation, Equation):
@@ -258,7 +266,6 @@ class PolygonAndTriangles(CircleAnimation, Equation):
 
 
 # manim -pql CircleArea.py PolygonAndTriangles
-
 
 # manim -pql CircleArea.py Equation
 
